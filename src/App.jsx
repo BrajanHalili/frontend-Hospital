@@ -1,126 +1,42 @@
-//const React = require('react') 
-//const useState = require('react') 
-import React, {useState} from "react";
-import axios from "axios";
-//const axios = require('axios')
+import React from "react";
 
-function App() {
-  const [patient, setPatient] = useState({
-    name: '',
-    dob: Date,
-    sex: '',
-    address:'',
-    maritial_status: '',
-    phone: 0,
-    email: ''
-  })
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-  function handleChange(event){
-    const {name, value} = event.target;
+import PatientDirectory from "./routes/patient/PatientDirectory";
+import DoctorDirectory from "./routes/doctor/DoctorDirectory";
+import ApptDirectory from "./routes/appointment/ApptDirectory";
+import StartPage from "./routes/StartPage";
 
-    setPatient(prevInput =>{
-      return {
-        ...prevInput,
-        [name] : value
-      }
-    })
-  }
 
-  async function handleClick(event){
-    event.preventDefault();
-    const newPatient = {
-      name: patient.name,
-      dob: patient.dob,
-      sex: patient.sex,
-      address: patient.address,
-      maritial_status: patient.maritial_status,
-      phone: patient.phone,
-      email: patient.email
-    }
-    fetch('http://localhost:3006/patient/add', {
-      method: "POST",
-      body: JSON.stringify({
-        name: patient.name,
-        dob: patient.dob,
-        sex: patient.sex,
-        address: patient.address,
-        maritial_status: patient.maritial_status,
-        phone: patient.phone,
-        email: patient.email
-      }),
-      headers: {
-				"Content-type": "application/json; charset=UTF-8"
-			}
-    })
-    //console.log(newPatient);
-    /*await axios.post("http://localhost:3006/patient/add", JSON.stringify({
-      name: patient.name,
-      dob: patient.dob,
-      sex: patient.sex,
-      address: patient.address,
-      maritial_status: patient.maritial_status,
-      phone: patient.phone,
-      email: patient.email
-    }), {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-      .then(response => {
-        console.log(response.data);
-      });
-      fetch("http://localhost:3006/patient/add",{
-        method: "POST",
-        body: JSON.stringify({
-          name: patient.name,
-          dob: patient.dob,
-          sex: patient.sex,
-          address: patient.address,
-          maritial_status: patient.maritial_status,
-          phone: patient.phone,
-          email: patient.email
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8"
-        }
-      })*/
-  }
+import UpdatePatient from "./routes/patient/UpdatePatientPage";
+import PatientDetails from "./routes/patient/PatientDetails";
+import DoctorDetails from "./routes/doctor/DoctorDetails";
+import ApptDetails from "./routes/appointment/ApptDetails";
 
-  return (
-      <div>
-        <h1>Enter New Patient</h1>
-        <form>
-            <div>
-              <input onChange={handleChange} name="name" value={patient.name} autoComplete="off" placeholder="Patient name" ></input>
-            </div>
+import { PatientsContextProvider } from "./context/PatientsContext";
+import Layout from "./components/Layout";
 
-            <div>
-              <input onChange={handleChange} name="dob" value={patient.dob} autoComplete="off" placeholder="Patient dob" ></input>
-            </div>
-            
-            <div>
-              <input onChange={handleChange} name="sex" value={patient.sex} autoComplete="off" placeholder="Patient sex" ></input>
-            </div>
-            
-            <div>
-              <input onChange={handleChange} name="address" value={patient.address} autoComplete="off" placeholder="Patient address" ></input>
-            </div>
-            
-            <div>
-              <input onChange={handleChange} name="maritial_status" value={patient.maritial_status} autoComplete="off" placeholder="Patient maritial status" ></input>
-            </div>
-            
-            <div>
-              <input onChange={handleChange} name="phone" value={patient.phone} autoComplete="off" placeholder="Patient phone" ></input>
-            </div>
-            
-            <div>
-              <input onChange={handleChange} name="email" value={patient.email} autoComplete="off" placeholder="Patient email" ></input>
-            </div>
-            
-            <button onClick={handleClick}> ADD PATIENT</button>
-        </form>
-      </div>
+
+
+
+const App = () => {
+
+    return (
+        <div className="App">
+            <Router>
+                <Routes>
+                    <Route exact path="/" element={<Layout />}>
+                        <Route index element={<StartPage />} />
+                        <Route path="/patients" element={<PatientDirectory />} />
+                        <Route path="/doctors" element={<DoctorDirectory />} />
+                        <Route path="/appointments" element={<ApptDirectory />} />
+                    </Route>
+                    <Route exact path="/patients/id" element={<PatientDetails />} />
+                    <Route exact path="/doctors/id" element={<DoctorDetails />} />
+                    <Route exact path="/appointments/id" element={<ApptDetails />} />
+                </Routes>
+            </Router>
+        </div>
     );
 }
 
