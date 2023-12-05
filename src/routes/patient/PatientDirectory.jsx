@@ -5,7 +5,7 @@ import PatientList from '../../components/patient/PatientList'
 const PDirectory = () => {
     return (
         <div>
-            <AddPatient />
+            {/* <AddPatient /> */}
             <PatientList />
         </div>
     )
