@@ -33,15 +33,6 @@ const AddPatient = () => {
 
     async function handleClick(event) {
         event.preventDefault();
-        const newPatient = {
-            name: patient.name,
-            dob: patient.dob,
-            sex: patient.sex,
-            address: patient.address,
-            maritial_status: patient.maritial_status,
-            phone: patient.phone,
-            email: patient.email
-        }
         fetch('http://localhost:3006/patient/add', {
             method: "POST",
             body: JSON.stringify({
@@ -55,6 +46,28 @@ const AddPatient = () => {
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
+            }
+        })            
+            .then(response => {console.log(response);
+            })
+
+        setPatient({
+            name: '',
+            dob: Date,
+            sex: '',
+            address: '',
+            maritial_status: '',
+            phone: 0,
+            email: ''
+        })
+        
+    }
+
+    function handleSex(value){
+        setPatient(prevInput => {
+            return {
+                ...prevInput,
+                sex: value
             }
         })
     }
@@ -77,11 +90,11 @@ const AddPatient = () => {
                 <div className="form-group col-md-3">
                     <label for="Input Sex" className="form-label">Patient Sex</label>
 
-                    <select className="form-control custom-select">
+                    <select className="form-control custom-select"  >
                         <option >Select</option>
-                        <option value={patient.sex}>Female</option>
-                        <option value={patient.sex}>Male</option>
-                        <option value={patient.sex}>Other</option>
+                        <option  onClick={() => handleSex("Female")}>Female</option>
+                        <option  onClick={() => handleSex("Male")}>Male</option>
+                        <option  onClick={() => handleSex("Other")} >Other</option>
                     </select>
                 </div>
 
