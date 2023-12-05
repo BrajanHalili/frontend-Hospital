@@ -100,8 +100,13 @@ function App() {
           <input onChange={handleChange} name="dob" value={patient.dob} autoComplete="off" placeholder="Patient dob" ></input>
         </div>
 
-        <div>
-          <input onChange={handleChange} name="sex" value={patient.sex} autoComplete="off" placeholder="Patient sex" ></input>
+        <div className="form-group col-md-3">
+          <select className="form-control custom-select">
+            <option>Sex</option>
+            <option>Female</option>
+            <option>Male</option>
+            <option>Other</option>
+          </select>
         </div>
 
         <div>
