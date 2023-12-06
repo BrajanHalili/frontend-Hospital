@@ -16,7 +16,7 @@ const AddPatient = () => {
         sex: '',
         address: '',
         maritial_status: '',
-        phone: 0,
+        phone: '',
         email: ''
     })
 
@@ -57,7 +57,7 @@ const AddPatient = () => {
             sex: '',
             address: '',
             maritial_status: '',
-            phone: 0,
+            phone: '',
             email: ''
         })
 
@@ -75,7 +75,7 @@ const AddPatient = () => {
 
                 <div className="mb-3">
                     <label for="Input DOB" className="form-label">DOB</label>
-                    <input onChange={handleChange} className="form-control" name="dob" value={patient.dob} autoComplete="off" placeholder="Patient dob" ></input>
+                    <input onChange={handleChange} type="date" pattern="\d{4}-\d{2}-\d{2}" className="form-control" name="dob" value={patient.dob} autoComplete="off" placeholder="Patient dob" ></input>
                 </div>
 
                 <div className="form-group col-md-3">
