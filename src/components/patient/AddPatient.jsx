@@ -16,7 +16,7 @@ const AddPatient = () => {
         sex: '',
         address: '',
         maritial_status: '',
-        phone: 0,
+        phone: '',
         email: ''
     })
 
@@ -57,19 +57,10 @@ const AddPatient = () => {
             sex: '',
             address: '',
             maritial_status: '',
-            phone: 0,
+            phone: '',
             email: ''
         })
-        
-    }
 
-    function handleSex(value){
-        setPatient(prevInput => {
-            return {
-                ...prevInput,
-                sex: value
-            }
-        })
     }
 
     return (
@@ -84,17 +75,17 @@ const AddPatient = () => {
 
                 <div className="mb-3">
                     <label for="Input DOB" className="form-label">DOB</label>
-                    <input onChange={handleChange} className="form-control" name="dob" value={patient.dob} autoComplete="off" placeholder="Patient dob" ></input>
+                    <input onChange={handleChange} type="date" pattern="\d{4}-\d{2}-\d{2}" className="form-control" name="dob" value={patient.dob} autoComplete="off" placeholder="Patient dob" ></input>
                 </div>
 
                 <div className="form-group col-md-3">
                     <label for="Input Sex" className="form-label">Patient Sex</label>
 
-                    <select className="form-control custom-select"  >
-                        <option >Select</option>
-                        <option  onClick={() => handleSex("Female")}>Female</option>
-                        <option  onClick={() => handleSex("Male")}>Male</option>
-                        <option  onClick={() => handleSex("Other")} >Other</option>
+                    <select className="form-control custom-select" value={patient.sex} onChange={handleChange} name="sex">
+                        <option>Select</option>
+                        <option value={"Female"}>Female</option>
+                        <option value={"Male"}>Male</option>
+                        <option value={"Other"}>Other</option>
                     </select>
                 </div>
 
