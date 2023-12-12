@@ -1,24 +1,39 @@
-import React from 'react'
-// import HospitalAppt from '../apis/HospitalAppt'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DoctorList = () => {
+    const [doctors, setDoctors] = useState([]);
+    let navigate = useNavigate();
 
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         // You can await here
-    //         try {
-    //             const response = await HospitalAppt.get("/");
-    //             console.log(response);
-    //         } catch (err) {
-    //             console.log(err)
-    //         }
-    //         // ...
-    //     }
-    //     fetchData();
-    // }, []);
+    // Fetch patients from your backend
+    useEffect(() => {
+        async function fetchDoctors() {
+            try {
+                const response = await fetch('http://localhost:3006/doctor');
+                if (!response.ok) {
+                    console.error('Server error:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                setDoctors(data);
+            } catch (error) {
+                console.error('Error fetching patients:', error);
+            }
+        }
+    
+        fetchDoctors();
+    }, []);
+
+    const handleUpdate = (doctorId) => {
+        navigate(`/doctors/${doctorId}`);
+    };
+
+    const handleDelete = (doctorId) => {
+        // Implement delete functionality
+    };
 
     return (
-        <div className=''>
+        <div>
             <div className='list-group'>
                 <table className="table table-hover">
                     <thead>
@@ -34,39 +49,27 @@ const DoctorList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>Male</td>
-                            <td>123 Place St, New York, NY 12345</td>
-                            <td>1234567890</td>
-                            <td>Cardiology</td>
-                            <td>123456789</td>
-                            <td>
-                                <button className="btn btn-warning">Update</button>
-                            </td>
-                            <td>
-                                <button className="btn btn-danger">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>Male</td>
-                            <td>123 Place St, New York, NY 12345</td>
-                            <td>1234567890</td>
-                            <td>Cardiology</td>
-                            <td>123456789</td>
-                            <td>
-                                <button className="btn btn-warning">Update</button>
-                            </td>
-                            <td>
-                                <button className="btn btn-danger">Delete</button>
-                            </td>
-                        </tr>
+                        {doctors.map(doctor => (
+                            <tr key={doctor.id}>
+                                <td>{doctor.doctor_name}</td>
+                                <td>{doctor.doctor_dob}</td>
+                                <td>{doctor.doctor_sex}</td>
+                                <td>{doctor.doctor_address}</td>
+                                <td>{doctor.doctor_specialty}</td>
+                                <td>{doctor.doctor_license_number}</td>
+                                <td>
+                                    <button onClick={() => handleUpdate(doctor.id)} className="btn btn-warning">Update</button>
+                                </td>
+                                <td>
+                                    <button onClick={() => handleDelete(doctor.id)} className="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default DoctorList
+export default DoctorList;
