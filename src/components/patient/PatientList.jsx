@@ -1,31 +1,39 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
-// import HospitalAppt from '../apis/HospitalAppt'
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PatientList = () => {
-
+    const [patients, setPatients] = useState([]);
     let navigate = useNavigate();
 
-    // useEffect(() => {
-    //     async function fetchData() {
-    //         // You can await here
-    //         try {
-    //             const response = await HospitalAppt.get("/");
-    //             console.log(response);
-    //         } catch (err) {
-    //             console.log(err)
-    //         }
-    //         // ...
-    //     }
-    //     fetchData();
-    // }, []);
+    // Fetch patients from your backend
+    useEffect(() => {
+        async function fetchPatients() {
+            try {
+                const response = await fetch('http://localhost:3006/patient');
+                if (!response.ok) {
+                    console.error('Server error:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                setPatients(data);
+            } catch (error) {
+                console.error('Error fetching patients:', error);
+            }
+        }
+    
+        fetchPatients();
+    }, []);
 
-    const handleUpdate = () => {
-        navigate(`/patients/id`);
-    }
+    const handleUpdate = (patientId) => {
+        navigate(`/patients/${patientId}`);
+    };
+
+    const handleDelete = (patientId) => {
+        // Implement delete functionality
+    };
 
     return (
-        <div className=''>
+        <div>
             <div className='list-group'>
                 <table className="table table-hover">
                     <thead>
@@ -34,6 +42,7 @@ const PatientList = () => {
                             <th scope='col'>DOB</th>
                             <th scope='col'>Sex</th>
                             <th scope='col'>Address</th>
+                            <th scope='col'>Marital Status</th>
                             <th scope='col'>Phone</th>
                             <th scope='col'>Email</th>
                             <th scope='col'>Edit</th>
@@ -41,39 +50,28 @@ const PatientList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>2021-02-05</td>
-                            <td>Male</td>
-                            <td>123 Place St, New York, NY 12345</td>
-                            <td>1234567890</td>
-                            <td>John@doe.com</td>
-                            <td>
-                                <button onClick={() => handleUpdate()} className="btn btn-warning">Update</button>
-                            </td>
-                            <td>
-                                <button className="btn btn-danger">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>2021-02-05</td>
-                            <td>Male</td>
-                            <td>123 Place St, New York, NY 12345</td>
-                            <td>1234567890</td>
-                            <td>John@doe.com</td>
-                            <td>
-                                <button className="btn btn-warning">Update</button>
-                            </td>
-                            <td>
-                                <button className="btn btn-danger">Delete</button>
-                            </td>
-                        </tr>
+                        {patients.map(patient => (
+                            <tr key={patient.id}>
+                                <td>{patient.patient_name}</td>
+                                <td>{patient.patient_dob}</td>
+                                <td>{patient.patient_sex}</td>
+                                <td>{patient.patient_address}</td>
+                                <td>{patient.patient_maritial_status}</td>
+                                <td>{patient.patient_phone}</td>
+                                <td>{patient.patient_email}</td>
+                                <td>
+                                    <button onClick={() => handleUpdate(patient.id)} className="btn btn-warning">Update</button>
+                                </td>
+                                <td>
+                                    <button onClick={() => handleDelete(patient.id)} className="btn btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default PatientList
+export default PatientList;
