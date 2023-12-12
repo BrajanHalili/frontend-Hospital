@@ -1,11 +1,14 @@
 import React from 'react'
-import AddDoctor from '../../components/doctor/AddDoctor'
+import { Outlet, NavLink } from 'react-router-dom'
+
 import DoctorList from '../../components/doctor/DoctorList'
 
 const DDirectory = () => {
     return (
         <div>
-            <AddDoctor />
+            <div class="btn btn-primary m-1">
+                <NavLink className="nav-link" to="/doctors/add">new doctor +</NavLink>
+            </div>
             <DoctorList />
         </div>
     )

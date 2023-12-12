@@ -47,8 +47,9 @@ const AddPatient = () => {
             headers: {
                 "Content-type": "application/json; charset=UTF-8"
             }
-        })            
-            .then(response => {console.log(response);
+        })
+            .then(response => {
+                console.log(response);
             })
 
         setPatient({
@@ -66,7 +67,7 @@ const AddPatient = () => {
     return (
         <div className="container">
             <button onClick={() => handleBack()} className="btn btn-warning">Go back</button>
-            <h1>Enter New Patient</h1>
+            {/* <h1>Enter New Patient</h1> */}
             <form>
                 <div className="mb-3">
                     <label for="Input Name" className="form-label">Name</label>
