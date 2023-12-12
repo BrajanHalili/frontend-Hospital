@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AppointmentList = () => {
-    const [appointment, setAppointment] = useState([]);
+    const [appointment, setAppointments] = useState([]);
     let navigate = useNavigate();
 
     // Fetch patients from your backend
@@ -15,7 +15,7 @@ const AppointmentList = () => {
                     return;
                 }
                 const data = await response.json();
-                setAppointment(data);
+                setAppointments(data);
             } catch (error) {
                 console.error('Error fetching appointments:', error);
             }
@@ -28,8 +28,25 @@ const AppointmentList = () => {
         navigate(`/appointments/${appointmentId}`);
     };
 
-    const handleDelete = (appointmentId) => {
-        // Implement delete functionality
+    const handleDelete = async (appointmentID) => {
+        try {
+            const response = await fetch(`http://localhost:3006/appointment/${appointmentID}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+    
+            console.log("Appointment deleted successfully");
+            setAppointments(prevAppointments => prevAppointments.filter(appointment => appointment.id !== appointmentID));
+        } catch (error) {
+            console.error("Failed to delete the appointment:", error);
+            // Handle error appropriately in the UI
+        }
     };
 
     return (
