@@ -28,8 +28,25 @@ const DoctorList = () => {
         navigate(`/doctors/${doctorId}`);
     };
 
-    const handleDelete = (doctorId) => {
-        // Implement delete functionality
+    const handleDelete = async (doctorId) => {
+        try {
+            const response = await fetch(`http://localhost:3006/doctor/${doctorId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status}`);
+            }
+    
+            console.log("Doctor deleted successfully");
+            setDoctors(prevDoctors => prevDoctors.filter(doctor => doctor.id !== doctorId));
+        } catch (error) {
+            console.error("Failed to delete the doctor:", error);
+            // Handle error appropriately in the UI
+        }
     };
 
     return (
