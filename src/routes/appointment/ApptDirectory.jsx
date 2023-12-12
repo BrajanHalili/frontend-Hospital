@@ -1,11 +1,14 @@
 import React from 'react'
-import AddAppt from '../../components/appointment/AddAppt'
+import { Outlet, NavLink } from 'react-router-dom'
+
 import ApptList from '../../components/appointment/ApptList'
 
 const ADirectory = () => {
     return (
         <div>
-            <AddAppt />
+            <div class="btn btn-primary m-1">
+                <NavLink className="nav-link" to="/appointments/add">new appointment +</NavLink>
+            </div>
             <ApptList />
         </div>
     )

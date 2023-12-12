@@ -18,9 +18,7 @@ const Layout = () => {
                                 <NavLink className="nav-link" to="/appointments">Appointments</NavLink>
                             </li>
                         </ul>
-                        <div className="col-md-1">
-                            <NavLink className="nav-link" to="/patients/add">Add new Patient</NavLink>
-                        </div>
+
                     </div>
                 </div>
             </nav>
