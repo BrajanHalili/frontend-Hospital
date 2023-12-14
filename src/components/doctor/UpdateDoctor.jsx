@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation,useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const UpdateDoctor = () => {
     const [doctor, setDoctor] = useState({
@@ -13,11 +13,11 @@ const UpdateDoctor = () => {
     let navigate = useNavigate();
     const state = useLocation();
     const handleBack = () => {
-        navigate(`/patients`);
+        navigate(`/doctors`);
     }
 
     useEffect(() => {
-        async function getPatient() {
+        async function getDoctor() {
             try {
                 fetch('http://localhost:3006/doctor/' + state.state.id, {
                     method: "GET",
@@ -25,18 +25,24 @@ const UpdateDoctor = () => {
                         "Content-type": "application/json"
                     }
                 })
-                .then(response => response.json())
-                .then(response => {
-                    //setDoctor({
-                    //});
-                })
+                    .then(response => response.json())
+                    .then(response => {
+                        setDoctor({
+                            name: response.doctor_name,
+                            dob: response.doctor_dob,
+                            sex: response.doctor_sex,
+                            address: response.doctor_address,
+                            specialty: response.doctor_specialty,
+                            license: response.doctor_license_number,
+                        })
+                    })
             }
             catch (error) {
                 console.error('Error fetching doctor:', error);
             }
         }
-        getPatient();
-    }, []);
+        getDoctor();
+    }, [state.state.id]);
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -49,7 +55,28 @@ const UpdateDoctor = () => {
         })
     }
 
-    //<button onClick={handleClick} type="submit" className="btn btn-primary">UPDATE DOCTOR</button>
+    async function handleClick(event) {
+        event.preventDefault();
+        fetch('http://localhost:3006/doctor/update/' + state.state.id, {
+            method: "PUT",
+            body: JSON.stringify({
+                name: doctor.name,
+                dob: doctor.dob,
+                sex: doctor.sex,
+                address: doctor.address,
+                specialty: doctor.specialty,
+                license: doctor.license,
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then((response) => {
+                console.log(response.status);
+            })
+    }
+
+
     return (
         <div className='container'>
             <button onClick={() => handleBack()} className="btn btn-warning">Go back</button>
@@ -90,10 +117,11 @@ const UpdateDoctor = () => {
                     <input onChange={handleChange} className="form-control" name="license" value={doctor.license} autoComplete="off" placeholder="Doctor license" ></input>
                 </div>
 
-                
+                <button onClick={handleClick} type="submit" className="btn btn-primary">UPDATE DOCTOR</button>
+
 
             </form>
-            </div>
+        </div>
     );
 
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation,useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 
 const UpdatePatient = () => {
@@ -27,25 +27,25 @@ const UpdatePatient = () => {
                         "Content-type": "application/json"
                     }
                 })
-                .then(response => response.json())
-                .then(response => {
-                    setPatient({
-                        name: response.patient_name,
-                        dob: response.patient_dob,
-                        sex: response.patient_sex,
-                        address: response.patient_address,
-                        maritial_status: response.patient_maritial_status,
-                        phone: response.patient_phone,
-                        email: response.patient_email
-                    });
-                })
+                    .then(response => response.json())
+                    .then(response => {
+                        setPatient({
+                            name: response.patient_name,
+                            dob: response.patient_dob,
+                            sex: response.patient_sex,
+                            address: response.patient_address,
+                            maritial_status: response.patient_maritial_status,
+                            phone: response.patient_phone,
+                            email: response.patient_email
+                        });
+                    })
             }
             catch (error) {
                 console.error('Error fetching patient:', error);
             }
         }
         getPatient();
-    }, []);
+    }, [state.state.id]);
 
 
     function handleChange(event) {
@@ -86,7 +86,7 @@ const UpdatePatient = () => {
             <button onClick={() => handleBack()} className="btn btn-warning">Go back</button>
 
             <form>
-            <div className="mb-3">
+                <div className="mb-3">
                     <label for="Input Name" className="form-label">Name</label>
                     <input onChange={handleChange} className="form-control" name="name" value={patient.name} autoComplete="off" placeholder="Patient name"></input>
                 </div>
