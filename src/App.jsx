@@ -8,16 +8,16 @@ import ApptDirectory from "./routes/appointment/ApptDirectory";
 import StartPage from "./routes/StartPage";
 
 
-import UpdatePatient from "./routes/patient/AddPatientPage";
+
 import PatientDetails from "./routes/patient/PatientDetails";
 import DoctorDetails from "./routes/doctor/DoctorDetails";
 import ApptDetails from "./routes/appointment/ApptDetails";
 
-import { PatientsContextProvider } from "./context/PatientsContext";
+
 import Layout from "./components/Layout";
 import AddPatientPage from "./routes/patient/AddPatientPage";
 import AddDoctorPage from "./routes/doctor/AddDoctorPage";
-import AddAppointmentPage from "./routes/appointment/AddApptPage";
+
 import AddApptPage from "./routes/appointment/AddApptPage";
 
 
