@@ -1,5 +1,5 @@
 import React from 'react'
-import UpdateDoctor from '../../components/doctor/UpdateDoctor'
+import UpdateDoctor from '../../components/doctor/UpdateDoctor.jsx'
 
 const DoctorDetails = () => {
     return (
