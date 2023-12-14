@@ -25,7 +25,7 @@ const PatientList = () => {
     }, []);
 
     const handleUpdate = (patientId) => {
-        navigate(`/patients/${patientId}`);
+        navigate(`/patients/${patientId}`,{state:{id:patientId}});
     };
 
     const handleDelete = async (patientId) => {

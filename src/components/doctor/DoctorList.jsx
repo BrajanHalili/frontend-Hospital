@@ -25,7 +25,7 @@ const DoctorList = () => {
     }, []);
 
     const handleUpdate = (doctorId) => {
-        navigate(`/doctors/${doctorId}`);
+        navigate(`/doctors/${doctorId}`,{state:{id:doctorId}});
     };
 
     const handleDelete = async (doctorId) => {
@@ -56,9 +56,9 @@ const DoctorList = () => {
                     <thead>
                         <tr className='table-primary'>
                             <th scope='col'>Name</th>
+                            <th scope='col'>DOB</th>
                             <th scope='col'>Sex</th>
                             <th scope='col'>Address</th>
-                            <th scope='col'>Phone</th>
                             <th scope='col'>Specialty</th>
                             <th scope='col'>License Number</th>
                             <th scope='col'>Edit</th>

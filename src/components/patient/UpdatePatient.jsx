@@ -1,12 +1,84 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { useLocation,useNavigate } from 'react-router-dom'
 
 
 const UpdatePatient = () => {
+    const [patient, setPatient] = useState({
+        name: '',
+        dob: Date,
+        sex: '',
+        address: '',
+        maritial_status: '',
+        phone: '',
+        email: ''
+    });
     let navigate = useNavigate();
-
+    const state = useLocation();
     const handleBack = () => {
         navigate(`/patients`);
+    }
+
+    useEffect(() => {
+        async function getPatient() {
+            try {
+                fetch('http://localhost:3006/patient/' + state.state.id, {
+                    method: "GET",
+                    headers: {
+                        "Content-type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(response => {
+                    setPatient({
+                        name: response.patient_name,
+                        dob: response.patient_dob,
+                        sex: response.patient_sex,
+                        address: response.patient_address,
+                        maritial_status: response.patient_maritial_status,
+                        phone: response.patient_phone,
+                        email: response.patient_email
+                    });
+                })
+            }
+            catch (error) {
+                console.error('Error fetching patient:', error);
+            }
+        }
+        getPatient();
+    }, []);
+
+
+    function handleChange(event) {
+        const { name, value } = event.target;
+
+        setPatient(prevInput => {
+            return {
+                ...prevInput,
+                [name]: value
+            }
+        })
+    }
+
+    async function handleClick(event) {
+        event.preventDefault();
+        fetch('http://localhost:3006/patient/update/' + state.state.id, {
+            method: "PUT",
+            body: JSON.stringify({
+                name: patient.name,
+                dob: patient.dob,
+                sex: patient.sex,
+                address: patient.address,
+                maritial_status: patient.maritial_status,
+                phone: patient.phone,
+                email: patient.email
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        })
+            .then((response) => {
+                console.log(response.status);
+            })
     }
 
     return (
@@ -14,25 +86,48 @@ const UpdatePatient = () => {
             <button onClick={() => handleBack()} className="btn btn-warning">Go back</button>
 
             <form>
-                <div class="mb-3">
+            <div className="mb-3">
                     <label for="Input Name" className="form-label">Name</label>
-                    <input type="text" className="form-control" id="Input Name" aria-describedby="emailHelp" />
+                    <input onChange={handleChange} className="form-control" name="name" value={patient.name} autoComplete="off" placeholder="Patient name"></input>
                 </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" className="form-label">DOB</label>
-                    <input type="date" className="form-control" id="Input DOB" />
-                </div>
-                <div>
-                    <label for="Input Name" className="form-label">Sex</label>
 
-                    <select class="form-select" aria-label="Default select example">
-                        <option selected>Select</option>
-                        <option value="1">Male</option>
-                        <option value="2">Female</option>
+                <div className="mb-3">
+                    <label for="Input DOB" className="form-label">DOB</label>
+                    <input onChange={handleChange} type="date" pattern="\d{4}-\d{2}-\d{2}" className="form-control" name="dob" value={patient.dob} autoComplete="off" placeholder="Patient dob" ></input>
+                </div>
+
+                <div className="form-group col-md-3">
+                    <label for="Input Sex" className="form-label">Patient Sex</label>
+
+                    <select className="form-control custom-select" value={patient.sex} onChange={handleChange} name="sex">
+                        <option>Select</option>
+                        <option value={"Female"}>Female</option>
+                        <option value={"Male"}>Male</option>
+                        <option value={"Other"}>Other</option>
                     </select>
                 </div>
-                <button type="submit" className="btn btn-primary">Submit</button>
+
+                <div className="mb-3">
+                    <label for="Input Address" className="form-label">Patient Address</label>
+                    <input onChange={handleChange} className="form-control" name="address" value={patient.address} autoComplete="off" placeholder="Patient address" ></input>
+                </div>
+
+                <div className="mb-3">
+                    <label for="Input Marital Status" className="form-label">Marital Status</label>
+                    <input onChange={handleChange} className="form-control" name="maritial_status" value={patient.maritial_status} autoComplete="off" placeholder="Patient maritial status" ></input>
+                </div>
+
+                <div className="mb-3">
+                    <label for="Input Phone" className="form-label">Patient Phone</label>
+                    <input onChange={handleChange} className="form-control" name="phone" value={patient.phone} autoComplete="off" placeholder="Patient phone" ></input>
+                </div>
+
+                <div className="mb-3">
+                    <label for="Input Email" className="form-label">Patient Email</label>
+                    <input onChange={handleChange} className="form-control" name="email" value={patient.email} autoComplete="off" placeholder="Patient email" ></input>
+                </div>
             </form>
+            <button onClick={handleClick} type="submit" className="btn btn-primary">UPDATE PATIENT</button>
         </div>
     )
 }

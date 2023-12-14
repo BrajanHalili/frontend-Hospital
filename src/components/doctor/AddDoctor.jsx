@@ -17,7 +17,6 @@ const AddDoctor = () => {
         address: '',
         specialty: '',
         license: '',
-
     })
 
     function handleChange(event) {
