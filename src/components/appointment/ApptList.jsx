@@ -25,7 +25,7 @@ const AppointmentList = () => {
     }, []);
 
     const handleUpdate = (appointmentId) => {
-        navigate(`/appointments/${appointmentId}`);
+        navigate(`/appointments/${appointmentId}`,{state:{id:appointmentId}});
     };
 
     const handleDelete = async (appointmentID) => {
@@ -55,7 +55,9 @@ const AppointmentList = () => {
                 <table className="table table-hover">
                     <thead>
                         <tr className='table-primary'>
+                            <th scope='col'>Patient ID</th>
                             <th scope='col'>Patient</th>
+                            <th scope='col'>Doctor ID</th>
                             <th scope='col'>Doctor</th>
                             <th scope='col'>Date</th>
                             <th scope='col'>Time</th>
@@ -68,7 +70,9 @@ const AppointmentList = () => {
                         {appointment.map(appointment => (
                             <tr key={appointment.id}>
                                 <td>{appointment.patient_id}</td>
+                                <td>{appointment.patient_name}</td>
                                 <td>{appointment.doctor_id}</td>
+                                <td>{appointment.doctor_name}</td>
                                 <td>{appointment.appointment_date}</td>
                                 <td>{appointment.appointment_time}</td>
                                 <td>{appointment.appointment_reason}</td>

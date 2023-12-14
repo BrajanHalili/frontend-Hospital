@@ -1,15 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+import { useLocation,useNavigate } from 'react-router-dom'
 
-import { useNavigate } from 'react-router-dom'
-
-
-const AddAppointment = () => {
-    let navigate = useNavigate();
-
-    const handleBack = () => {
-        navigate(`/appointments`);
-    }
-
+const UpdateAppointment = () => {
     const [appointment, setAppointment] = useState({
         patient_id: null,
         doctor_id: null,
@@ -19,6 +11,41 @@ const AddAppointment = () => {
         time: '',
         reason: '',
     })
+    let navigate = useNavigate();
+    const state = useLocation();
+    const handleBack = () => {
+        navigate(`/appointments`);
+    }
+
+    useEffect(() => {
+        async function getAppointment() {
+            try {
+                fetch('http://localhost:3006/appointment/' + state.state.id, {
+                    method: "GET",
+                    headers: {
+                        "Content-type": "application/json"
+                    }
+                })
+                .then(response => response.json())
+                .then(response => {
+                    setAppointment({
+                        patient_id: response.patient_id,
+                        doctor_id: response.doctor_id,
+                        doctor_name: response.doctor_name,
+                        patient_name: response.patient_name,
+                        doa: response.appointment_date,
+                        time: response.appointment_time,
+                        reason: response.appointment_reason
+                    });
+                })
+            }
+            catch (error) {
+                console.error('Error fetching patient:', error);
+            }
+        }
+        getAppointment();
+    }, [state.state.id]);
+
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -33,8 +60,8 @@ const AddAppointment = () => {
 
     async function handleClick(event) {
         event.preventDefault();
-        fetch('http://localhost:3006/appointment/add', {
-            method: "POST",
+        fetch('http://localhost:3006/appointment/update/' + state.state.id, {
+            method: "PUT",
             body: JSON.stringify({
                 patient_id: appointment.patient_id,
                 doctor_id: appointment.doctor_id,
@@ -48,28 +75,15 @@ const AddAppointment = () => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-            .then(response => {
-                console.log(response);
+            .then((response) => {
+                console.log(response.status);
             })
-
-        setAppointment({
-            patient_id: null,
-            doctor_id: null,
-            doctor_name: '',
-            patient_name: '',
-            doa: Date,
-            time: '',
-            reason: '',
-        })
-
     }
 
     return (
-        <div className="container">
+        <div className='container'>
             <button onClick={() => handleBack()} className="btn btn-warning">Go back</button>
-            <h1>Enter New Appointment</h1>
-            <form>
-                <div className="mb-3">
+            <div className="mb-3">
                     <label for="Input Doctor ID" className="form-label">Doctor ID</label>
                     <input onChange={handleChange} className="form-control" name="doctor_id" value={appointment.doctor_id} autoComplete="off" placeholder="Doctor ID" ></input>
                 </div>
@@ -103,13 +117,9 @@ const AddAppointment = () => {
                     <label for="Input Appt Reason" className="form-label">Appointment Reason</label>
                     <input onChange={handleChange} className="form-control" name="reason" value={appointment.reason} autoComplete="off" placeholder="Appointment reason" ></input>
                 </div>
-
-
-                <button onClick={handleClick} type="submit" className="btn btn-primary">ADD APPOINTMENT</button>
-
-            </form>
+                <button onClick={handleClick} type="submit" className="btn btn-primary">UPDATE Appointment</button>
         </div>
-    );
+    )
 }
 
-export default AddAppointment;
+export default UpdateAppointment

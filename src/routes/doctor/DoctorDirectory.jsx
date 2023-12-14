@@ -1,5 +1,5 @@
 import React from 'react'
-import { Outlet, NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import DoctorList from '../../components/doctor/DoctorList'
 
