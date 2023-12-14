@@ -1,10 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom'
 
 
 const AddAppointment = () => {
     let navigate = useNavigate();
+
+    const [patients, setPatients] = useState([]);
+    const [doctors, setDoctors] = useState([]);
+
+
+    useEffect(() => {
+        async function fetchPatients() {
+            try {
+                const response = await fetch('http://localhost:3006/patient');
+                if (!response.ok) {
+                    console.error('Server error:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                setPatients(data);
+            } catch (error) {
+                console.error('Error fetching patients:', error);
+            }
+        }
+
+        async function fetchDoctors() {
+            try {
+                const response = await fetch('http://localhost:3006/doctor');
+                if (!response.ok) {
+                    console.error('Server error:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                setDoctors(data);
+            } catch (error) {
+                console.error('Error fetching doctors:', error);
+            }
+        }
+
+        fetchPatients();
+        fetchDoctors();
+    }, []);
 
     const handleBack = () => {
         navigate(`/appointments`);
@@ -29,6 +66,12 @@ const AddAppointment = () => {
                 [name]: value
             }
         })
+    }
+
+    function handleChangeSelect(event) {
+        const { name, key, value } = event.target;
+
+
     }
 
     async function handleClick(event) {
@@ -69,24 +112,23 @@ const AddAppointment = () => {
             <button onClick={() => handleBack()} className="btn btn-warning">Go back</button>
             <h1>Enter New Appointment</h1>
             <form>
-                <div className="mb-3">
-                    <label for="Input Doctor ID" className="form-label">Doctor ID</label>
-                    <input onChange={handleChange} className="form-control" name="doctor_id" value={appointment.doctor_id} autoComplete="off" placeholder="Doctor ID" ></input>
-                </div>
-
-                <div className="mb-3">
-                    <label for="Input Doctor Name" className="form-label">Doctor Name</label>
-                    <input onChange={handleChange} className="form-control" name="doctor_name" value={appointment.doctor_name} autoComplete="off" placeholder="Doctor name" ></input>
-                </div>
-
-                <div className="mb-3">
-                    <label for="Input Patient ID" className="form-label">Patient ID</label>
-                    <input onChange={handleChange} className="form-control" name="patient_id" value={appointment.patient_id} autoComplete="off" placeholder="Patient ID" ></input>
-                </div>
 
                 <div className="mb-3">
                     <label for="Input Patient Name" className="form-label">Patient Name</label>
-                    <input onChange={handleChange} className="form-control" name="patient_name" value={appointment.patient_name} autoComplete="off" placeholder="Patient name" ></input>
+                    <select className="form-control custom-select" value={appointment.patient_name} onChange={handleChange} name="patient_name">
+                        {patients.map(patient => (
+                            <option key={patient.id} value={patient.patient_name}>{patient.patient_name}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="mb-3">
+                    <label for="Input Doctors Name" className="form-label">Doctor Name</label>
+                    <select className="form-control custom-select" value={appointment.doctor_name} onChange={handleChangeSelect} name="doctor_name">
+                        {doctors.map(doctor => (
+                            <option key={doctor.id} value={doctor.doctor_name}>{doctor.doctor_name}</option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className="mb-3">
