@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-    doctorName: 'Initial Doc',
-    doctorId: 4,
+    doctorName: null,
+    doctorId: null,
 };
 
 export const doctorSlice = createSlice({
@@ -10,8 +10,8 @@ export const doctorSlice = createSlice({
     initialState,
     reducers: {
         setDoctorData: (state, action) => {
-            state.doctorName = action.payload.value;
-            state.doctorId = action.payload.key;
+            state.doctorName = action.payload[1];
+            state.doctorId = action.payload[0];
         },
     }
 });

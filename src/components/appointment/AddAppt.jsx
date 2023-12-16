@@ -17,6 +17,12 @@ const AddAppointment = () => {
     const patientData = useSelector(selectPatientData);
     const doctorData = useSelector(selectDoctorData);
 
+    const [appointment, setAppointment] = useState({
+        doa: Date,
+        time: '',
+        reason: '',
+    })
+
 
     const dispatch = useDispatch();
 
@@ -60,15 +66,6 @@ const AddAppointment = () => {
         navigate(`/appointments`);
     }
 
-    const [appointment, setAppointment] = useState({
-        patient_id: null,
-        doctor_id: null,
-        doctor_name: '',
-        patient_name: '',
-        doa: Date,
-        time: '',
-        reason: '',
-    })
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -82,13 +79,17 @@ const AddAppointment = () => {
     }
 
     function handleChangePatient(event) {
-        const { key, value } = event.target;
-        dispatch(setPatientData([key, value]));
+        const values = event.target.value.split(',');
+        console.log(values[0]);
+        console.log(values[1]);
+        dispatch(setPatientData(values));
     }
 
     function handleChangeDoctor(event) {
-        const { key, value } = event.target;
-        dispatch(setDoctorData([key, value]));
+        const values = event.target.value.split(',');
+        console.log(values[0]);
+        console.log(values[1]);
+        dispatch(setDoctorData(values));
     }
 
     async function handleClick(event) {
@@ -114,14 +115,12 @@ const AddAppointment = () => {
             })
 
         setAppointment({
-            patient_id: null,
-            doctor_id: null,
-            doctor_name: '',
-            patient_name: '',
             doa: Date,
             time: '',
             reason: '',
         })
+        dispatch(setPatientData([null, ""]))
+        dispatch(setDoctorData([null, ""]))
 
     }
 
@@ -133,18 +132,20 @@ const AddAppointment = () => {
 
                 <div className="mb-3">
                     <label for="Input Patient Name" className="form-label">Patient Name</label>
-                    <select className="form-control custom-select" value={appointment.patient_name} onChange={handleChangePatient} name="patient_name">
+                    <select className="form-control custom-select" value={[patientData.patientId, patientData.patientName]} onChange={handleChangePatient} name="patient_name">
+                        <option></option>
                         {patients.map(patient => (
-                            <option key={patient.id} value={patient.patient_name}>{patient.patient_name}</option>
+                            <option key={patient.id} value={[patient.id, patient.patient_name]}>{patient.patient_name}</option>
                         ))}
                     </select>
                 </div>
 
                 <div className="mb-3">
                     <label for="Input Doctors Name" className="form-label">Doctor Name</label>
-                    <select className="form-control custom-select" value={appointment.doctor_name} onChange={handleChangeDoctor} name="doctor_name">
+                    <select className="form-control custom-select" key={doctorData.doctorId} value={[doctorData.doctorId, doctorData.doctorName]} onChange={handleChangeDoctor} name="doctor_name">
+                        <option></option>
                         {doctors.map(doctor => (
-                            <option key={doctor.id} value={doctor.doctor_name}>{doctor.doctor_name}</option>
+                            <option key={doctor.id} value={[doctor.id, doctor.doctor_name]}>{doctor.doctor_name}</option>
                         ))}
                     </select>
                 </div>

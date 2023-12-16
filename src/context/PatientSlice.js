@@ -3,13 +3,13 @@ import { createSlice } from '@reduxjs/toolkit'
 export const patientSlice = createSlice({
     name: 'patientData',
     initialState: {
-        patientName: 'Initial Patient',
-        patientId: 2,
+        patientName: null,
+        patientId: null,
     },
     reducers: {
         setPatientData: (state, action) => {
-            state.patientName = action.payload.value;
-            state.patientId = action.payload.key;
+            state.patientName = action.payload[1];
+            state.patientId = action.payload[0];
         },
     }
 });
