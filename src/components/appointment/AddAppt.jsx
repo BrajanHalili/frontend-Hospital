@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
+
+import { useSelector, useDispatch } from 'react-redux'
+import { setPatientData, selectPatientData } from '../../context/PatientSlice'
+import { setDoctorData, selectDoctorData } from '../../context/DoctorSlice'
+
 
 import { useNavigate } from 'react-router-dom'
 
@@ -6,19 +11,61 @@ import { useNavigate } from 'react-router-dom'
 const AddAppointment = () => {
     let navigate = useNavigate();
 
-    const handleBack = () => {
-        navigate(`/appointments`);
-    }
+    const [patients, setPatients] = useState([]);
+    const [doctors, setDoctors] = useState([]);
+
+    const patientData = useSelector(selectPatientData);
+    const doctorData = useSelector(selectDoctorData);
 
     const [appointment, setAppointment] = useState({
-        patient_id: null,
-        doctor_id: null,
-        doctor_name: '',
-        patient_name: '',
         doa: Date,
         time: '',
         reason: '',
     })
+
+
+    const dispatch = useDispatch();
+
+
+    useEffect(() => {
+
+        async function fetchPatients() {
+            try {
+                const response = await fetch('http://localhost:3006/patient');
+                if (!response.ok) {
+                    console.error('Server error:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                setPatients(data);
+            } catch (error) {
+                console.error('Error fetching patients:', error);
+            }
+        }
+
+        async function fetchDoctors() {
+            try {
+                const response = await fetch('http://localhost:3006/doctor');
+                if (!response.ok) {
+                    console.error('Server error:', response.status, response.statusText);
+                    return;
+                }
+                const data = await response.json();
+                setDoctors(data);
+            } catch (error) {
+                console.error('Error fetching doctors:', error);
+            }
+        }
+
+        fetchPatients();
+        fetchDoctors();
+    }, []);
+
+
+    const handleBack = () => {
+        navigate(`/appointments`);
+    }
+
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -31,15 +78,30 @@ const AddAppointment = () => {
         })
     }
 
+    function handleChangePatient(event) {
+        const values = event.target.value.split(',');
+        console.log(values[0]);
+        console.log(values[1]);
+        dispatch(setPatientData(values));
+    }
+
+    function handleChangeDoctor(event) {
+        const values = event.target.value.split(',');
+        console.log(values[0]);
+        console.log(values[1]);
+        dispatch(setDoctorData(values));
+    }
+
     async function handleClick(event) {
         event.preventDefault();
         fetch('http://localhost:3006/appointment/add', {
             method: "POST",
             body: JSON.stringify({
-                patient_id: appointment.patient_id,
-                doctor_id: appointment.doctor_id,
-                doctor_name: appointment.doctor_name,
-                patient_name: appointment.patient_name,
+                patient_id: patientData.patientId,
+                doctor_id: doctorData.doctorId,
+                doctor_name: doctorData.doctorName,
+                patient_name: patientData.patientName,
+
                 appointment_date: appointment.doa,
                 appointment_time: appointment.time,
                 appointment_reason: appointment.reason
@@ -53,14 +115,12 @@ const AddAppointment = () => {
             })
 
         setAppointment({
-            patient_id: null,
-            doctor_id: null,
-            doctor_name: '',
-            patient_name: '',
             doa: Date,
             time: '',
             reason: '',
         })
+        dispatch(setPatientData([null, ""]))
+        dispatch(setDoctorData([null, ""]))
 
     }
 
@@ -69,24 +129,25 @@ const AddAppointment = () => {
             <button onClick={() => handleBack()} className="btn btn-warning">Go back</button>
             <h1>Enter New Appointment</h1>
             <form>
-                <div className="mb-3">
-                    <label for="Input Doctor ID" className="form-label">Doctor ID</label>
-                    <input onChange={handleChange} className="form-control" name="doctor_id" value={appointment.doctor_id} autoComplete="off" placeholder="Doctor ID" ></input>
-                </div>
-
-                <div className="mb-3">
-                    <label for="Input Doctor Name" className="form-label">Doctor Name</label>
-                    <input onChange={handleChange} className="form-control" name="doctor_name" value={appointment.doctor_name} autoComplete="off" placeholder="Doctor name" ></input>
-                </div>
-
-                <div className="mb-3">
-                    <label for="Input Patient ID" className="form-label">Patient ID</label>
-                    <input onChange={handleChange} className="form-control" name="patient_id" value={appointment.patient_id} autoComplete="off" placeholder="Patient ID" ></input>
-                </div>
 
                 <div className="mb-3">
                     <label for="Input Patient Name" className="form-label">Patient Name</label>
-                    <input onChange={handleChange} className="form-control" name="patient_name" value={appointment.patient_name} autoComplete="off" placeholder="Patient name" ></input>
+                    <select className="form-control custom-select" value={[patientData.patientId, patientData.patientName]} onChange={handleChangePatient} name="patient_name">
+                        <option></option>
+                        {patients.map(patient => (
+                            <option key={patient.id} value={[patient.id, patient.patient_name]}>{patient.patient_name}</option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="mb-3">
+                    <label for="Input Doctors Name" className="form-label">Doctor Name</label>
+                    <select className="form-control custom-select" key={doctorData.doctorId} value={[doctorData.doctorId, doctorData.doctorName]} onChange={handleChangeDoctor} name="doctor_name">
+                        <option></option>
+                        {doctors.map(doctor => (
+                            <option key={doctor.id} value={[doctor.id, doctor.doctor_name]}>{doctor.doctor_name}</option>
+                        ))}
+                    </select>
                 </div>
 
                 <div className="mb-3">
