@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
+import { useSelector, useDispatch } from 'react-redux'
+import { setPatientData, selectPatientData } from '../../context/PatientSlice'
+import { setDoctorData, selectDoctorData } from '../../context/DoctorSlice'
+
+
 import { useNavigate } from 'react-router-dom'
 
 
@@ -9,8 +14,15 @@ const AddAppointment = () => {
     const [patients, setPatients] = useState([]);
     const [doctors, setDoctors] = useState([]);
 
+    const patientData = useSelector(selectPatientData);
+    const doctorData = useSelector(selectDoctorData);
+
+
+    const dispatch = useDispatch();
+
 
     useEffect(() => {
+
         async function fetchPatients() {
             try {
                 const response = await fetch('http://localhost:3006/patient');
@@ -43,6 +55,7 @@ const AddAppointment = () => {
         fetchDoctors();
     }, []);
 
+
     const handleBack = () => {
         navigate(`/appointments`);
     }
@@ -68,10 +81,14 @@ const AddAppointment = () => {
         })
     }
 
-    function handleChangeSelect(event) {
-        const { name, key, value } = event.target;
+    function handleChangePatient(event) {
+        const { key, value } = event.target;
+        dispatch(setPatientData([key, value]));
+    }
 
-
+    function handleChangeDoctor(event) {
+        const { key, value } = event.target;
+        dispatch(setDoctorData([key, value]));
     }
 
     async function handleClick(event) {
@@ -79,10 +96,11 @@ const AddAppointment = () => {
         fetch('http://localhost:3006/appointment/add', {
             method: "POST",
             body: JSON.stringify({
-                patient_id: appointment.patient_id,
-                doctor_id: appointment.doctor_id,
-                doctor_name: appointment.doctor_name,
-                patient_name: appointment.patient_name,
+                patient_id: patientData.patientId,
+                doctor_id: doctorData.doctorId,
+                doctor_name: doctorData.doctorName,
+                patient_name: patientData.patientName,
+
                 appointment_date: appointment.doa,
                 appointment_time: appointment.time,
                 appointment_reason: appointment.reason
@@ -115,7 +133,7 @@ const AddAppointment = () => {
 
                 <div className="mb-3">
                     <label for="Input Patient Name" className="form-label">Patient Name</label>
-                    <select className="form-control custom-select" value={appointment.patient_name} onChange={handleChange} name="patient_name">
+                    <select className="form-control custom-select" value={appointment.patient_name} onChange={handleChangePatient} name="patient_name">
                         {patients.map(patient => (
                             <option key={patient.id} value={patient.patient_name}>{patient.patient_name}</option>
                         ))}
@@ -124,7 +142,7 @@ const AddAppointment = () => {
 
                 <div className="mb-3">
                     <label for="Input Doctors Name" className="form-label">Doctor Name</label>
-                    <select className="form-control custom-select" value={appointment.doctor_name} onChange={handleChangeSelect} name="doctor_name">
+                    <select className="form-control custom-select" value={appointment.doctor_name} onChange={handleChangeDoctor} name="doctor_name">
                         {doctors.map(doctor => (
                             <option key={doctor.id} value={doctor.doctor_name}>{doctor.doctor_name}</option>
                         ))}
