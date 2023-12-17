@@ -21,6 +21,8 @@ const UpdateAppointment = () => {
     const dispatch = useDispatch();
     const state = useLocation();
     const handleBack = () => {
+        dispatch(setPatientData([null, ""]));
+        dispatch(setDoctorUpdate([null, ""]));
         navigate(`/appointments`);
     }
 
@@ -130,6 +132,7 @@ const UpdateAppointment = () => {
             .then((response) => {
                 console.log(response.status);
             })
+
     }
 
     return (
