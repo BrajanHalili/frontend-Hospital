@@ -46,9 +46,6 @@ const AddDoctor = () => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-            .then(response => {
-                console.log(response);
-            })
 
         setDoctor({
             name: '',
@@ -80,7 +77,6 @@ const AddDoctor = () => {
                     <label for="Input Sex" className="form-label">Doctor Sex</label>
 
                     <select className="form-control custom-select" value={doctor.sex} onChange={handleChange} name="sex">
-                        <option>Select</option>
                         <option value={"Female"}>Female</option>
                         <option value={"Male"}>Male</option>
                         <option value={"Other"}>Other</option>

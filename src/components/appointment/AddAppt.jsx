@@ -82,15 +82,11 @@ const AddAppointment = () => {
 
     function handleChangePatient(event) {
         const values = event.target.value.split(',');
-        console.log(values[0]);
-        console.log(values[1]);
         dispatch(setPatientData(values));
     }
 
     function handleChangeDoctor(event) {
         const values = event.target.value.split(',');
-        console.log(values[0]);
-        console.log(values[1]);
         dispatch(setDoctorData(values));
     }
 
@@ -113,7 +109,7 @@ const AddAppointment = () => {
             }
         })
             .then(response => {
-                console.log(response);
+                //console.log(response);
             })
 
         setAppointment({
