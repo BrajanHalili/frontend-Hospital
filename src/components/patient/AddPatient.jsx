@@ -48,9 +48,6 @@ const AddPatient = () => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-            .then(response => {
-                console.log(response);
-            })
 
         setPatient({
             name: '',
@@ -83,7 +80,6 @@ const AddPatient = () => {
                     <label for="Input Sex" className="form-label">Patient Sex</label>
 
                     <select className="form-control custom-select" value={patient.sex} onChange={handleChange} name="sex">
-                        <option>Select</option>
                         <option value={"Female"}>Female</option>
                         <option value={"Male"}>Male</option>
                         <option value={"Other"}>Other</option>
