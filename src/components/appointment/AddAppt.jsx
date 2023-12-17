@@ -108,9 +108,6 @@ const AddAppointment = () => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         })
-            .then(response => {
-                //console.log(response);
-            })
 
         setAppointment({
             doa: Date,
