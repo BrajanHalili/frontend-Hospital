@@ -63,6 +63,8 @@ const AddAppointment = () => {
 
 
     const handleBack = () => {
+        dispatch(setPatientData([null, ""]))
+        dispatch(setDoctorData([null, ""]))
         navigate(`/appointments`);
     }
 
