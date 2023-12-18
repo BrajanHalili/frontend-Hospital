@@ -1,5 +1,6 @@
 import React from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
+import SearchBar from './search/SearchBar'
 
 const Layout = () => {
     return (
@@ -20,6 +21,7 @@ const Layout = () => {
                         </ul>
 
                     </div>
+                    <SearchBar />
                 </div>
             </nav>
             <Outlet />
