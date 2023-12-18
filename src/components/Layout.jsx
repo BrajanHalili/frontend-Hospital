@@ -19,9 +19,8 @@ const Layout = () => {
                                 <NavLink className="nav-link" to="/appointments">Appointments</NavLink>
                             </li>
                         </ul>
-
+                        <SearchBar />
                     </div>
-                    <SearchBar />
                 </div>
             </nav>
             <Outlet />
