@@ -1,5 +1,6 @@
 import React from 'react'
 import { Outlet, NavLink } from 'react-router-dom'
+import SearchBar from './search/SearchBar'
 
 const Layout = () => {
     return (
@@ -18,7 +19,7 @@ const Layout = () => {
                                 <NavLink className="nav-link" to="/appointments">Appointments</NavLink>
                             </li>
                         </ul>
-
+                        <SearchBar />
                     </div>
                 </div>
             </nav>

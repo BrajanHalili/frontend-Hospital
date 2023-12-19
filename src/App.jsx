@@ -20,6 +20,8 @@ import AddDoctorPage from "./routes/doctor/AddDoctorPage";
 
 import AddApptPage from "./routes/appointment/AddApptPage";
 
+import Results from "./components/search/Results";
+
 
 
 
@@ -43,7 +45,7 @@ const App = () => {
                     <Route exact path="/patients/add" element={<AddPatientPage />} />
                     <Route exact path="/doctors/add" element={<AddDoctorPage />} />
                     <Route exact path="/appointments/add" element={<AddApptPage />} />
-
+                    <Route path="/results" element={<Results />} />
                 </Routes>
             </Router>
         </div>
