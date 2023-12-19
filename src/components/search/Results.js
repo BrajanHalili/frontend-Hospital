@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const Results = () => {
   const location = useLocation();
@@ -21,34 +21,34 @@ const Results = () => {
   }, [query, searchType]);
 
   return (
-    <div>
-      <h2>Search Results</h2>
+    <div className='container'>
+      <h2 className='text-center m-4'>Search Results</h2>
       {Array.isArray(results) && results.length > 0 ? (
         results.map((result, index) => (
           <div key={index}>
             {result.products.map((product) => (
-              <div key={product.product_number}>
-                <p>Product Number: {product.product_number}</p>
-                <p>Brand Name: {product.brand_name}</p>
-                <p>Dosage Form: {product.dosage_form}</p>
-                <p>Route: {product.route}</p>
-                <p>Marketing Status: {product.marketing_status}</p>
-                <p>Active Ingredients:</p>
-                <ul>
-                  {product.active_ingredients.map((ingredient, i) => (
-                    <li key={i}>
-                      {ingredient.name} - {ingredient.strength}
-                    </li>
-                  ))}
-                </ul>
+              <div className='card m-3' key={product.product_number}>
+                <div className='card-body'>
+                  <p>Brand Name: {product.brand_name}</p>
+                  <p>Dosage Form: {product.dosage_form}</p>
+                  <p>Route: {product.route}</p>
+                  <p>Marketing Status: {product.marketing_status}</p>
+                  <p>Active Ingredients:</p>
+                  <ul>
+                    {product.active_ingredients.map((ingredient, i) => (
+                      <li key={i}>
+                        {ingredient.name} - {ingredient.strength}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             ))}
           </div>
         ))
       ) : (
-        <p>No results found for the given query.</p>
+        <p>No results found for the given query. Please check to make sure there are no errors in spelling.</p>
       )}
-      <Link to="/">Back to Search</Link>
     </div>
   );
 };
