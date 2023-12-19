@@ -13,7 +13,7 @@ const AddPatient = () => {
     const [patient, setPatient] = useState({
         name: '',
         dob: Date,
-        sex: '',
+        sex: 'Female',
         address: '',
         maritial_status: '',
         phone: '',
