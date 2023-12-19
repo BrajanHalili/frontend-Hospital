@@ -6,8 +6,9 @@ const SearchBar = () => {
   const [searchType, setSearchType] = useState('generic'); // Default to generic search
 
   return (
-    <div>
+    <div className=''>
       <input
+        className='w-75'
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
@@ -20,7 +21,7 @@ const SearchBar = () => {
         <button>Search</button>
       </Link>
       <div>
-        <label>
+        <label className='m-1'>
           <input
             type="radio"
             value="generic"
@@ -29,7 +30,7 @@ const SearchBar = () => {
           />
           Search by Generic Name
         </label>
-        <label>
+        <label className='m-1'>
           <input
             type="radio"
             value="brand"
