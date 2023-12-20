@@ -142,7 +142,7 @@ const UpdatePatient = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {appointment.map(appointment => (
+                        {appointment?.map(appointment => (
                             <tr key={appointment.id}>
                                 <td>{appointment.patient_id}</td>
                                 <td>{appointment.patient_name}</td>
