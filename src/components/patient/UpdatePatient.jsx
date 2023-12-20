@@ -12,6 +12,7 @@ const UpdatePatient = () => {
         phone: '',
         email: ''
     });
+    const [appointment, setAppointments] = useState([]);
     let navigate = useNavigate();
     const state = useLocation();
     const handleBack = () => {
@@ -30,14 +31,15 @@ const UpdatePatient = () => {
                     .then(response => response.json())
                     .then(response => {
                         setPatient({
-                            name: response.patient_name,
-                            dob: response.patient_dob,
-                            sex: response.patient_sex,
-                            address: response.patient_address,
-                            maritial_status: response.patient_maritial_status,
-                            phone: response.patient_phone,
-                            email: response.patient_email
+                            name: response.patient.patient_name,
+                            dob: response.patient.patient_dob,
+                            sex: response.patient.patient_sex,
+                            address: response.patient.patient_address,
+                            maritial_status: response.patient.patient_maritial_status,
+                            phone: response.patient.patient_phone,
+                            email: response.patient.patient_email
                         });
+                        setAppointments(response.apptdata);
                     })
             }
             catch (error) {
@@ -124,6 +126,36 @@ const UpdatePatient = () => {
                 </div>
             </form>
             <button onClick={handleClick} type="submit" className="btn btn-primary">UPDATE PATIENT</button>
+
+            <div className='list-group'>
+                <h2 className='text-center'>Appointments for this patient</h2>
+                <table className="table table-hover">
+                    <thead>
+                        <tr className='table-primary'>
+                            <th scope='col'>Patient ID</th>
+                            <th scope='col'>Patient</th>
+                            <th scope='col'>Doctor ID</th>
+                            <th scope='col'>Doctor</th>
+                            <th scope='col'>Date</th>
+                            <th scope='col'>Time</th>
+                            <th scope='col'>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {appointment?.map(appointment => (
+                            <tr key={appointment.id}>
+                                <td>{appointment.patient_id}</td>
+                                <td>{appointment.patient_name}</td>
+                                <td>{appointment.doctor_id}</td>
+                                <td>{appointment.doctor_name}</td>
+                                <td>{appointment.appointment_date}</td>
+                                <td>{appointment.appointment_time}</td>
+                                <td>{appointment.appointment_reason}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </div>
     )
 }
